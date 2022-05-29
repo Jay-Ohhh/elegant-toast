@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "types": ["jest", "node"],
+    "skipLibCheck": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "elegant-toast": ["src/index.ts"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true
+  },
+  "exclude": [
+    "config",
+    "node_modules",
+    "lib",
+    "es",
+    "dist",
+    "docs-dist",
+    "example",
+    "**/__test__",
+    "test",
+    "tests",
+    "**/.umi*"
+  ]
+}

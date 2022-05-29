@@ -1,0 +1,85 @@
+{
+  "name": "elegant-toast",
+  "version": "1.0.0",
+  "description": "A elegant React toast",
+  "keywords": [
+    "elegant-toast",
+    "react",
+    "totast",
+    "message",
+    "notification"
+  ],
+  "author": {
+    "name": "jay_ohhh",
+    "email": "1598353326@qq.com"
+  },
+  "homepage": "https://github.com/Jay-Ohhh/elegant-toast",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jay-Ohhh/elegant-toast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jay-Ohhh/elegant-toast/issues"
+  },
+  "scripts": {
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "build": "father-build",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "license": "MIT",
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "dependencies": {
+    "goober": "^2.1.9"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.0.3",
+    "@umijs/fabric": "^2.8.1",
+    "@umijs/test": "^3.0.5",
+    "dumi": "^1.1.0",
+    "father-build": "^1.17.2",
+    "gh-pages": "^3.0.0",
+    "lint-staged": "^10.0.7",
+    "open-browser-webpack-plugin": "^0.0.5",
+    "prettier": "^2.2.1",
+    "yorkie": "^2.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "IE 11",
+    "not IE 10"
+  ]
+}
