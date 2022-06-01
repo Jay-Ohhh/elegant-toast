@@ -1,4 +1,4 @@
-export const perferReduceMotion = (() => {
+export const prefersReducedMotion = (() => {
   let shouldReduceMotion: boolean | undefined;
   return () => {
     if (shouldReduceMotion === undefined && typeof matchMedia !== 'undefined') {

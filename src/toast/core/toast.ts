@@ -1,12 +1,5 @@
-import type {
-  Toast,
-  ToastBaseOptions,
-  ToastOptions,
-  ToastPosition,
-  ToastType,
-  ValueOrFunction,
-} from './types';
-import { renderContent, genId, isFunction } from './utils';
+import type { Toast, ToastBaseOptions, ToastOptions, ToastType, ValueOrFunction } from './types';
+import { renderContent, genId } from './utils';
 import { dispatch, ActionType } from './store';
 import React from 'react';
 
@@ -64,10 +57,10 @@ toast.promise = <T>(
   promise: Promise<T>,
   contents: {
     loading: React.ReactNode | (() => React.ReactNode); // pengding 显示的内容
-    success: ValueOrFunction<React.ReactNode, T>; // fulfilled 显示的内容
-    error: ValueOrFunction<React.ReactNode, any>; // rejected 显示的内容
+    success: ValueOrFunction<T>; // fulfilled 显示的内容
+    error: ValueOrFunction<any>; // rejected 显示的内容
   },
-  options: ToastOptions,
+  options: ToastOptions & { onClose?: (t: Toast) => void },
 ) => {
   const loadingContent = renderContent(contents.loading);
 

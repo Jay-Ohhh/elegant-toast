@@ -3,17 +3,22 @@
  * 1. 维护一个store，保存toasts，通过reducer进行增删改
  * 2. 建立一个收集者，reducer触发时会让收集者通知订阅者进行更新状态
  */
-import React, { useMemo, useCallback, CSSProperties } from 'react';
+import React, { memo, useMemo, useCallback, CSSProperties } from 'react';
 import ReactDOM from 'react-dom';
 import { css, setup } from 'goober';
 import type { ToastPosition, ToasterProps } from '../core/types';
-import { perferReduceMotion } from '../core/utils';
+import { prefersReducedMotion, renderContent } from '../core/utils';
 import { useToaster } from '../core/useToaster';
+import ToastBar from './toast-bar';
 
 setup(React.createElement);
 
 // offset: 第几个
-const getPositionStyle = (position: ToastPosition, offset: number): CSSProperties => {
+const getPositionStyle = (
+  position: ToastPosition,
+  offset: number,
+  transitionTimingFunction = 'cubic-bezier(.21,1.02,.73,1)',
+): CSSProperties => {
   const top = position.includes('top');
   const verticalStyle: CSSProperties = top ? { top: 0 } : { bottom: 0 };
   const horizonalStyle: CSSProperties = position.includes('center')
@@ -31,7 +36,7 @@ const getPositionStyle = (position: ToastPosition, offset: number): CSSPropertie
     right: 0,
     display: 'flex',
     // 是否启用过渡效果
-    transition: perferReduceMotion() ? undefined : 'all 230ms cubic-bezier(.21,1.02,.73,1)',
+    transition: prefersReducedMotion() ? undefined : `all 230ms ${transitionTimingFunction}`,
     transform: `translateY(${offset * (top ? 1 : -1)}px)`,
     ...verticalStyle,
     ...horizonalStyle,
@@ -55,6 +60,7 @@ const Toaster: React.FC<ToasterProps> = ({
   children,
   wrapperStyle,
   wrapperClassName,
+  transitionTimingFunction,
   getContainer = () => document.body,
 }) => {
   const { toasts, handlers } = useToaster(toastOptions);
@@ -98,7 +104,7 @@ const Toaster: React.FC<ToasterProps> = ({
           gutter,
           defaultPosition,
         });
-        const positionStyle = getPositionStyle(toastPosition, offset);
+        const positionStyle = getPositionStyle(toastPosition, offset, transitionTimingFunction);
 
         const ref = t.height
           ? undefined
@@ -106,12 +112,15 @@ const Toaster: React.FC<ToasterProps> = ({
               handlers.updateHeight(t.id, el.height);
             });
         return (
-          <div
-            ref={ref}
-            key={t.id}
-            className={t.visible ? activeClass : ''}
-            style={positionStyle}
-          ></div>
+          <div ref={ref} key={t.id} className={t.visible ? activeClass : ''} style={positionStyle}>
+            {t.type === 'custom' ? (
+              renderContent(t.content, t)
+            ) : children ? (
+              children(t)
+            ) : (
+              <ToastBar toast={t} position={toastPosition}></ToastBar>
+            )}
+          </div>
         );
       })}
     </div>
@@ -119,3 +128,5 @@ const Toaster: React.FC<ToasterProps> = ({
 
   return ReactDOM.createPortal(toaster, parentDom);
 };
+
+export default memo(Toaster);

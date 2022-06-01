@@ -17,22 +17,23 @@ const config: IConfig = {
 
   navs: {
     'zh-CN': [
-      null, // null 值代表保留约定式生成的导航，只做增量配置
-      { title: 'Components', path: '/zh-CN/Components' },
+      // null, // null 值代表保留约定式生成的导航，只做增量配置
+      { title: 'Components', path: '/zh-CN/components' },
       {
         title: 'GitHub',
         path: githubPath,
       },
     ],
     'en-US': [
-      null, // null 值代表保留约定式生成的导航，只做增量配置
-      { title: 'Components', path: '/Components' },
+      // null, // null 值代表保留约定式生成的导航，只做增量配置
+      { title: 'Components', path: '/components' },
       {
         title: 'GitHub',
         path: githubPath,
       },
     ],
   },
+
   menus: {
     '/': [
       {

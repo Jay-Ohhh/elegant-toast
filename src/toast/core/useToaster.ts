@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { dispatch, ActionType, useStore } from './store';
 import { toast } from './toast';
 import type { ToastOptions, Toast, ToastPosition } from './types';
@@ -62,7 +62,7 @@ export const useToaster = (toastOptions?: ToastOptions) => {
         return offset;
       },
     }),
-    [toast, pasueAt],
+    [toasts, pasueAt],
   );
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const useToaster = (toastOptions?: ToastOptions) => {
 
       const durationLeft = (t.duration || 0) + t.pauseDuration - (now - t.createdAt);
 
-      if (durationLeft <= 0) {
+      if (durationLeft < 0) {
         t.visible && toast.dismiss(t.id);
         return;
       }
