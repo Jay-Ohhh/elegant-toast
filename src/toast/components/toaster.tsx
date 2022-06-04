@@ -3,13 +3,12 @@
  * 1. 维护一个store，保存toasts，通过reducer进行增删改
  * 2. 建立一个收集者，reducer触发时会让收集者通知订阅者进行更新状态
  */
-import React, { memo, useMemo, useCallback, CSSProperties } from 'react';
-import ReactDOM from 'react-dom';
+import React, { memo, useCallback, CSSProperties } from 'react';
 import { css, setup } from 'goober';
 import type { ToastPosition, ToasterProps } from '../core/types';
 import { prefersReducedMotion, renderContent } from '../core/utils';
 import { useToaster } from '../core/useToaster';
-import ToastBar from './toast-bar';
+import { ToastBar } from './toast-bar';
 
 setup(React.createElement);
 
@@ -52,16 +51,16 @@ const activeClass = css`
 
 const DEFAULT_OFFSET = 16;
 
-const Toaster: React.FC<ToasterProps> = ({
+const toaster: React.FC<ToasterProps> = ({
   reverseOrder,
   defaultPosition = 'top-center',
   toastOptions,
   gutter,
   children,
-  wrapperStyle,
-  wrapperClassName,
+  toasterStyle,
+  toasterClassName,
+  toastBarStyle,
   transitionTimingFunction,
-  getContainer = () => document.body,
 }) => {
   const { toasts, handlers } = useToaster(toastOptions);
 
@@ -77,11 +76,9 @@ const Toaster: React.FC<ToasterProps> = ({
     [],
   );
 
-  const parentDom = useMemo(() => getContainer(), [getContainer]);
-
-  const toaster = (
+  return (
     <div
-      className={wrapperClassName}
+      className={toasterClassName}
       style={{
         position: 'fixed',
         zIndex: 9999,
@@ -92,12 +89,12 @@ const Toaster: React.FC<ToasterProps> = ({
         // https://developer.mozilla.org/zh-CN/docs/Web/CSS/pointer-events
         // none：元素永远不会成为鼠标事件的target。但是，当其后代元素的pointer-events属性指定其他值时，鼠标事件可以指向后代元素，在这种情况下，鼠标事件将在捕获或冒泡阶段触发父元素的事件侦听器。
         pointerEvents: 'none', // 会影响子元素，因此子元素需要设置 'auto'
-        ...wrapperStyle,
+        ...toasterStyle,
       }}
       onMouseEnter={handlers.startPause}
       onMouseLeave={handlers.endPause}
     >
-      {toasts.map((t) => {
+      {toasts.map(t => {
         const toastPosition = t.position || defaultPosition;
         const offset = handlers.calculateOffset(t, {
           reverseOrder,
@@ -108,7 +105,7 @@ const Toaster: React.FC<ToasterProps> = ({
 
         const ref = t.height
           ? undefined
-          : getRectRef((el) => {
+          : getRectRef(el => {
               handlers.updateHeight(t.id, el.height);
             });
         return (
@@ -118,15 +115,13 @@ const Toaster: React.FC<ToasterProps> = ({
             ) : children ? (
               children(t)
             ) : (
-              <ToastBar toast={t} position={toastPosition}></ToastBar>
+              <ToastBar toast={t} position={toastPosition} style={toastBarStyle} content={t.content}></ToastBar>
             )}
           </div>
         );
       })}
     </div>
   );
-
-  return ReactDOM.createPortal(toaster, parentDom);
 };
 
-export default memo(Toaster);
+export const Toaster = memo(toaster);

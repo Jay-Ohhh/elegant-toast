@@ -17,7 +17,7 @@ const firstLineAniation = keyframes`
     transform: scale(0);
     opacity: 0;
   }
-  from {
+  to {
     transform: scale(1);
     opacity: 1;
   }
@@ -28,7 +28,7 @@ const secondLineAnimation = keyframes`
     transform: scale(0) rotate(90deg);
     opacity: 0;
   }
-  from {
+  to {
     transform: scale(1) rotate(90deg);
     opacity: 1;
   }
@@ -39,12 +39,12 @@ export interface ErrorTheme {
   secondary?: string;
 }
 
-const ErrorIcon = styled('div')<ErrorTheme>`
+const errorIcon = styled('div')<ErrorTheme>`
   position: relative;
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  background: ${(p) => p.primary || '#ff4b4b'};
+  background: ${p => p.primary || '#ff4b4b'};
   transform: rotate(45deg);
   opacity: 0;
   /* forwards当动画完成后，保持最后一帧的状态（也就是最后一个关键帧中定义的状态） */
@@ -57,7 +57,7 @@ const ErrorIcon = styled('div')<ErrorTheme>`
     left: 4px;
     width: 12px;
     height: 2px;
-    background: ${(p) => p.secondary || '#fff'};
+    background: ${p => p.secondary || '#fff'};
     border-radius: 3px;
     opacity: 0;
     animation: ${firstLineAniation} 0.15s ease-out 0.15s forwards;
@@ -69,4 +69,4 @@ const ErrorIcon = styled('div')<ErrorTheme>`
   }
 `;
 
-export default React.memo(ErrorIcon);
+export const ErrorIcon = React.memo(errorIcon);

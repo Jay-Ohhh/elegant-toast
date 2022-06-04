@@ -1,14 +1,11 @@
 import React, { useMemo } from 'react';
 import { styled, keyframes } from 'goober';
 
-import type { Toast } from '../core/types';
-import ErrorIcon, { ErrorTheme } from './error';
-import LoaderIcon, { LoaderTheme } from './loader';
-import CheckmarkIcon, { CheckmarkTheme } from './checkmark';
-
-const StatusWrapper = styled('div')`
-  position: absolute;
-`;
+import type { ToastIconProps } from '../core/types';
+import { ErrorIcon, ErrorTheme } from './error';
+import { LoaderIcon, LoaderTheme } from './loader';
+import { CheckmarkIcon, CheckmarkTheme } from './checkmark';
+import { WarnIcon, WarnTheme } from './warn';
 
 const IndicatorWrapper = styled('div')`
   position: relative;
@@ -40,14 +37,12 @@ export const AnimatedIconWrapper = styled('div')`
 
 export type IconThemes = Partial<{
   success: CheckmarkTheme;
+  warn: WarnTheme;
   error: ErrorTheme;
   loading: LoaderTheme;
 }>;
 
-const ToastIcon: React.FC<{
-  toast: Toast;
-}> = ({ toast }) => {
-  const { icon, type, iconTheme } = toast;
+const toastIcon: React.FC<ToastIconProps> = ({ icon, type = 'blank', iconTheme }) => {
   const node = useMemo(() => {
     let t: JSX.Element;
     if (icon) {
@@ -58,15 +53,18 @@ const ToastIcon: React.FC<{
       }
       return t;
     }
-    if (type === 'blank') return null;
+    if (type === 'blank' || type === 'custom') return null;
 
     return (
       <IndicatorWrapper>
-        <LoaderIcon {...iconTheme} />
-        {type !== 'loading' && (
-          <StatusWrapper>
-            {type === 'success' ? <CheckmarkIcon {...iconTheme} /> : <ErrorIcon {...iconTheme} />}
-          </StatusWrapper>
+        {type === 'loading' ? (
+          <LoaderIcon {...iconTheme} />
+        ) : type === 'success' ? (
+          <CheckmarkIcon {...iconTheme} />
+        ) : type === 'warn' ? (
+          <WarnIcon {...iconTheme} />
+        ) : (
+          <ErrorIcon {...iconTheme} />
         )}
       </IndicatorWrapper>
     );
@@ -75,4 +73,4 @@ const ToastIcon: React.FC<{
   return node;
 };
 
-export default React.memo(ToastIcon);
+export const ToastIcon = React.memo(toastIcon);

@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled, keyframes } from 'goober';
 
 const circleAnimation = keyframes`
@@ -31,17 +32,16 @@ export interface CheckmarkTheme {
   secondary?: string;
 }
 
-const CheckmarkIcon = styled('div')<CheckmarkTheme>`
+const checkmarkIcon = styled('div')<CheckmarkTheme>`
   width: 20px;
-  opacity: 0;
   height: 20px;
+  opacity: 0;
   border-radius: 10px;
-  background: ${(p) => p.primary || '#61d345'};
   position: relative;
   transform: rotate(45deg);
+  background: ${p => p.primary || '#61d345'};
 
-  animation: ${circleAnimation} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  animation-delay: 100ms;
+  animation: ${circleAnimation} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 100ms forwards;
   &:after {
     position: absolute;
     bottom: 6px;
@@ -49,14 +49,12 @@ const CheckmarkIcon = styled('div')<CheckmarkTheme>`
     box-sizing: border-box;
     width: 6px;
     height: 10px;
-    border-color: ${(p) => p.secondary || '#fff'};
-    border-right: 2px solid;
-    border-bottom: 2px solid;
+    border-right: 2px solid ${p => p.secondary || '#fff'};
+    border-bottom: 2px solid ${p => p.secondary || '#fff'};
     opacity: 0;
-    animation: ${checkmarkAnimation} 0.2s ease-out forwards;
-    animation-delay: 200ms;
+    animation: ${checkmarkAnimation} 0.2s ease-out 200ms forwards;
     content: '';
   }
 `;
 
-export default CheckmarkIcon;
+export const CheckmarkIcon = React.memo(checkmarkIcon);

@@ -27,3 +27,7 @@ export const genId = (() => {
   let count = 0;
   return () => (count++).toString();
 })();
+
+export function isBrowser() {
+  return !!(typeof window !== undefined && window.document && window.document.createElement);
+}

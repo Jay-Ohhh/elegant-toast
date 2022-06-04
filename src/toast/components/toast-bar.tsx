@@ -1,8 +1,8 @@
-import React, { useMemo, CSSProperties } from 'react';
+import React, { useMemo, CSSProperties, memo } from 'react';
 import { styled, keyframes } from 'goober';
 import { renderContent } from '../core/utils';
-import type { Toast, ToastPosition } from '../core/types';
-import ToastIcon from './toast-icon';
+import type { ToastPosition, ToastBarProps } from '../core/types';
+import { ToastIcon } from './toast-icon';
 import { prefersReducedMotion } from '../core/utils';
 
 const enterAnimation = (factor: number) => `
@@ -41,13 +41,6 @@ const Content = styled('div')`
   white-space: pre-line;
 `;
 
-export interface ToastBarProps {
-  toast: Toast;
-  position?: ToastPosition;
-  style?: CSSProperties;
-  children?: (components: { icon?: React.ReactNode; content: React.ReactNode }) => React.ReactNode;
-}
-
 const getAnimationStyle = (position: ToastPosition, visible: boolean): CSSProperties => {
   const top = position.includes('top');
   const factor = top ? 1 : -1;
@@ -62,16 +55,17 @@ const getAnimationStyle = (position: ToastPosition, visible: boolean): CSSProper
   };
 };
 
-const ToastBar: React.FC<ToastBarProps> = ({ toast, position, style, children }) => {
+const toastBar: React.FC<ToastBarProps> = ({ toast, position, style, content: body, children }) => {
   const animationStyle: CSSProperties = toast?.height
     ? getAnimationStyle(toast.position || position || 'top-center', toast.visible)
     : { opacity: 0 };
 
-  const icon = useMemo(() => <ToastIcon toast={toast} />, [toast]);
-  const content = useMemo(
-    () => <Content {...toast.ariaProps}>{renderContent(toast.content, toast)}</Content>,
-    [toast],
+  const icon = useMemo(
+    () => <ToastIcon icon={toast.icon} type={toast.type} iconTheme={toast.iconTheme} />,
+    [toast.icon, toast.type, toast.iconTheme],
   );
+
+  const content = useMemo(() => <Content {...toast.ariaProps}>{renderContent(body, toast)}</Content>, [toast]);
 
   return (
     <ToastBarBase
@@ -83,7 +77,7 @@ const ToastBar: React.FC<ToastBarProps> = ({ toast, position, style, children })
       }}
     >
       {typeof children === 'function' ? (
-        children({ icon, content })
+        children({ icon, content: renderContent(body, toast) })
       ) : (
         <>
           {icon}
@@ -94,4 +88,4 @@ const ToastBar: React.FC<ToastBarProps> = ({ toast, position, style, children })
   );
 };
 
-export default React.memo(ToastBar);
+export const ToastBar = React.memo(toastBar);

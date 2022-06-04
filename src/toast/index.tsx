@@ -1,12 +1,13 @@
 import { toast } from './core/toast';
+export { ToastBar } from './components/toast-bar';
+export { ToastIcon } from './components/toast-icon';
+export { Toaster } from './components/toaster';
 export { useToaster } from './core/useToaster';
-export { default as ToastBar } from './components/toast-bar';
-export { default as ToastIcon } from './components/toast-icon';
-export { default as Toaster } from './components/toaster';
 export { useStore as useToasterStore } from './core/store';
-export { default as CheckmarkIcon } from './components/checkmark';
-export { default as ErrorIcon } from './components/error';
-export { default as LoaderIcon } from './components/loader';
-
+export { CheckmarkIcon } from './components/checkmark';
+export { ErrorIcon } from './components/error';
+export { WarnIcon } from './components/warn';
+export { LoaderIcon } from './components/loader';
+export { Toast, ToastBarProps, ToastOptions, ToastBaseOptions } from './core/types';
 export { toast };
 export default toast;

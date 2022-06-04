@@ -4,21 +4,21 @@ import { toast } from './toast';
 import type { ToastOptions, Toast, ToastPosition } from './types';
 
 export const useToaster = (toastOptions?: ToastOptions) => {
-  const { toasts, pasueAt } = useStore(toastOptions);
+  const { toasts, pausedAt } = useStore(toastOptions);
 
   const handlers = useMemo(
     () => ({
       startPause: () => {
         dispatch({
           type: ActionType.START_PAUSE,
-          time: new Date().getDate(),
+          time: new Date().getTime(),
         });
       },
       endPause: () => {
-        if (pasueAt) {
+        if (pausedAt) {
           dispatch({
             type: ActionType.END_PAUSE,
-            time: new Date().getDate(),
+            time: new Date().getTime(),
           });
         }
       },
@@ -41,15 +41,13 @@ export const useToaster = (toastOptions?: ToastOptions) => {
 
         // 同方向的toast
         const relevantToasts = toasts.filter(
-          (t) =>
-            (t.position || defaultPosition) === (toast.position || defaultPosition) &&
-            t.height &&
-            t.visible,
+          // 不要用 t.visible 作判断，而是用 t.height （代表元素存在）
+          t => (t.position || defaultPosition) === (toast.position || defaultPosition) && t.height,
         );
 
         if (relevantToasts.length === 0) return 0;
 
-        const toastIndex = relevantToasts.findIndex((t) => t.id === toast.id);
+        const toastIndex = relevantToasts.findIndex(t => t.id === toast.id);
 
         const toastIndexBeforeCount = toastIndex <= 0 ? 0 : toastIndex;
 
@@ -62,16 +60,16 @@ export const useToaster = (toastOptions?: ToastOptions) => {
         return offset;
       },
     }),
-    [toasts, pasueAt],
+    [toasts, pausedAt],
   );
 
   useEffect(() => {
-    if (pasueAt) {
+    if (pausedAt) {
       return;
     }
 
     const now = new Date().getTime();
-    const timeouts = toasts.map((t) => {
+    const timeouts = toasts.map(t => {
       if (t.duration === Infinity) {
         return;
       }
@@ -87,9 +85,9 @@ export const useToaster = (toastOptions?: ToastOptions) => {
     });
 
     return () => {
-      timeouts.forEach((timeout) => timeout && clearTimeout(timeout));
+      timeouts.forEach(timeout => timeout && clearTimeout(timeout));
     };
-  }, [toasts, pasueAt]);
+  }, [toasts, pausedAt]);
 
   return {
     toasts,

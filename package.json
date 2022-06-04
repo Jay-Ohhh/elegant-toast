@@ -30,7 +30,9 @@
     "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src --fix --ext .js,.ts,.jsx,.tsx",
+    "commit": "cz"
   },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -46,11 +48,8 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,less,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
+    "src/**":[
+      "npm run lint"
     ]
   },
   "peerDependencies": {
@@ -64,9 +63,16 @@
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
+    "@typescript-eslint/parser": "^5.27.0",
     "@umijs/fabric": "^2.8.1",
     "@umijs/test": "^3.0.5",
+    "commitizen": "^4.2.4",
+    "cz-customizable": "^6.3.0",
     "dumi": "^1.1.0",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
     "father-build": "^1.17.2",
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
@@ -81,5 +87,10 @@
     "not dead",
     "IE 11",
     "not IE 10"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  }
 }
