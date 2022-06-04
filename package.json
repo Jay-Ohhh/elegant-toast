@@ -48,7 +48,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "src/**":[
+    "src/**": [
       "npm run lint"
     ]
   },
@@ -60,6 +60,8 @@
     "goober": "^2.1.9"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.0.3",
@@ -67,6 +69,7 @@
     "@umijs/fabric": "^2.8.1",
     "@umijs/test": "^3.0.5",
     "commitizen": "^4.2.4",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "cz-customizable": "^6.3.0",
     "dumi": "^1.1.0",
     "eslint": "^8.17.0",
@@ -78,6 +81,7 @@
     "lint-staged": "^10.0.7",
     "open-browser-webpack-plugin": "^0.0.5",
     "prettier": "^2.2.1",
+    "semantic-release": "^19.0.2",
     "yorkie": "^2.0.0"
   },
   "browserslist": [

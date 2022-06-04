@@ -1,0 +1,30 @@
+name: release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out Repository Code to Workflow
+        uses: actions/checkout@v2 # checkout 仓库代码到 Workflow 工作区
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          # actions/setup-node@v2 底层使用了actions/cache
+          # 缓存npm下载的依赖项，单项目仓库下会依据package-lock.josn或yarn.lock
+          # 更多的缓存技巧可以参考ant-design的test.yml
+          cache: 'npm'
+      # 如果没有安装node，默认支持npm、yarn等包管理器
+      - run: npm install
+      - run: npm run build
+
+      - name: release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
