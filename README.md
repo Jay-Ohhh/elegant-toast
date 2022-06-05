@@ -67,7 +67,7 @@ const App = () => {
 
 Contributions, issues and feature requests are welcome!
 
-Feel free to check [issues page]([Issues · Jay-Ohhh/rolib-cli · GitHub](https://github.com/Jay-Ohhh/rolib-cli/issues)). You can also take a look at the [contributing guide](https://github.com/Jay-Ohhh/rolib-cli/blob/master/CONTRIBUTING.md).
+Feel free to check [issues page](https://github.com/Jay-Ohhh/elegant-toast/issues). You can also take a look at the [contributing guide](https://github.com/Jay-Ohhh/elegant-toast/blob/master/CONTRIBUTING.md).
 
 
 
@@ -87,7 +87,7 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2022 [Jay-Ohhh](https://github.com/Jay-Ohhh).
 
-This project is [MIT](https://github.com/Jay-Ohhh/anchor-scroll-menu/blob/master/LICENSE) licensed.
+This project is [MIT](https://github.com/Jay-Ohhh/elegant-toast/blob/master/LICENSE) licensed.
 
 
 
